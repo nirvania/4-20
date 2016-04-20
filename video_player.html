@@ -37,7 +37,12 @@ window.onload=function(){
 	var oStop=document.querySelector('.stop');
 	var oVol=document.querySelector('.vol');
 	var oTime=document.querySelector('.time');
-	var oBarBtn=document.querySelector('bar_btn');
+	var oBarBox=document.querySelector('.barbox');
+	var oVolBox=document.querySelector('.volbox');
+	var oBar=document.querySelector('.bar');
+	var oVolBar=document.querySelector('.volbar');
+	var oBarBtn=document.querySelector('.barbtn');
+	var oVolBtn=document.querySelector('.volbtn');
 	
 	oPlay.onclick=function(){
 		oV.play();
@@ -62,10 +67,49 @@ window.onload=function(){
 		oTime.innerHTML=toDou(Math.floor(oV.currentTime/60))+':'+toDou(Math.floor(oV.currentTime%60))+'\/'+toDou(Math.floor(oV.duration/60))+':'+toDou(Math.floor(oV.duration%60));
 	}
 	time();
+	oV.volume=1;
 	oV.ontimeupdate=function(){
 		time();
+		oBar.style.width=oBarBtn.style.left=oV.currentTime/oV.duration*oBarBox.offsetWidth+'px';
 	};
 	
+	oBarBtn.onmousedown=function(ev){
+		var disX=ev.pageX-oBarBtn.offsetLeft;
+		document.onmousemove=function(ev){
+			var l=ev.pageX-disX+10;
+			if(l<0){
+				l=0;	
+			}else if(l>oBarBox.offsetWidth){
+				l=oBarBox.offsetWidth;	
+			}
+			oBar.style.width=oBarBtn.style.left=l+'px';
+			oV.currentTime=l/oBarBox.offsetWidth*oV.duration;
+		};
+		document.onmouseup=function(){
+			document.onmousemove=null;
+			document.onmouseup=null;
+		};
+		return false;
+	}
+	
+	oVolBtn.onmousedown=function(ev){
+		var disX=ev.pageX-oVolBtn.offsetLeft;
+		document.onmousemove=function(ev){
+			var l=ev.pageX-disX+10;
+			if(l<0){
+				l=0;	
+			}else if(l>oVolBox.offsetWidth){
+				l=oVolBox.offsetWidth;	
+			}
+			oVolBar.style.width=oVolBtn.style.left=l+'px';
+			oV.volume=l/oBarBox.offsetWidth;
+		};
+		document.onmouseup=function(){
+			document.onmousemove=null;
+			document.onmouseup=null;
+		};
+		return false;
+	}
 	
 };
 </script>
