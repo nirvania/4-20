@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+*{margin:0;padding:0}
+a{text-decoration:none;font:12px 'microsoft yahei';}
+.clear:after{content:'';display:block;clear:both;}
+.fl{float:left;}
+.fr{float:right;}
+.box{width:800px;height:350px;margin:0 auto;background:#666;text-align:left;padding-top:50px;position:relative;}
+video{width:800px;height:280px;}
+.ctrl{width:100%;height:50px;background:#111;position:absolute;bottom:0;left:0;}
+.on{width:120px;height:100%;margin-left:10px;}
+.ctrl a{width:30px;height:30px;border-radius:50%;text-align:center;line-height:30px;margin:0;padding:0;float:left;margin-top:10px;margin-right:8px;color:#555;background:#fff;}
+.progress{width:450px;height:50px;}
+.barbox{width:400px;height:10px;background:#fff;margin-top:20px;margin-left:5px;position:relative;}
+.bar{width:0;background:#06F;height:10px;}
+.barbtn{width:20px;height:14px;border-radius:6px;background:#ccc;display:block;position:absolute;top:-2px;left:0;margin-left:-10px;}
+.time{width:40px;font:12px 'microsoft yahei';height:100%;line-height:50px;color:#fff;}
+.audio{width:180px;height:50px;}
+.vol{width:40px;}
+.volbox{width:100px;height:10px;background:#fff;margin-top:20px;position:relative;margin-right:30px;}
+.volbtn{width:20px;height:14px;border-radius:6px;background:#ccc;display:block;position:absolute;top:-2px;left:0;margin-left:-10px;}
+.volbar{width:0;background:#06F;height:10px;}
+.ctrl .mute{color:red;text-decoration:line-through;}
+</style>
+<script>
+function toDou(n){
+	return n<10?n='0'+n:n=''+n;	
+}
+window.onload=function(){
+	var oV=document.querySelector('video');
+	var oPlay=document.querySelector('.play');
+	var oPause=document.querySelector('.pause');
+	var oStop=document.querySelector('.stop');
+	var oVol=document.querySelector('.vol');
+	var oTime=document.querySelector('.time');
+	var oBarBtn=document.querySelector('bar_btn');
+	
+	oPlay.onclick=function(){
+		oV.play();
+	};
+	oPause.onclick=function(){
+		oV.pause();
+	};
+	oStop.onclick=function(){
+		oV.currentTime=0;
+		oV.pause();	
+	}
+	oVol.onclick=function(){
+		if(this.className=='vol fl'){
+			this.className='vol fl mute';
+			oV.mute=true;
+		}else{
+			this.className='vol fl';	
+			oV.mute=false;
+		}
+	}
+	function time(){
+		oTime.innerHTML=toDou(Math.floor(oV.currentTime/60))+':'+toDou(Math.floor(oV.currentTime%60))+'\/'+toDou(Math.floor(oV.duration/60))+':'+toDou(Math.floor(oV.duration%60));
+	}
+	time();
+	oV.ontimeupdate=function(){
+		time();
+	};
+	
+	
+};
+</script>
+</head>
+
+<body>
+<div class="box">
+	<video src="nike.mp4"></video>
+    <div class="ctrl clear">
+    	<div class="on clear fl">
+        	<a href="javascript:;" class="play">播放</a>
+        	<a href="javascript:;" class="pause">暂停</a>
+        	<a href="javascript:;" class="stop">停止</a>
+        </div>
+        <div class="progress clear fl">
+        	<div class="barbox fl">
+            	<p class="bar"></p>
+                <em class="barbtn"></em>
+            </div>
+            <div class="time fr">00:00/00:00</div>
+        </div>
+        <div class="audio clear fr">
+        	<a class="vol fl" href="javascript:;">音量</a>
+        	<div class="volbox fr">
+            	<p class="volbar"></p>
+                <em class="volbtn"></em>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
